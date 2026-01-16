@@ -1,0 +1,98 @@
+{
+  "id": "uuTVAPrmMr03a3ox",
+  "name": "whatsapp-chat-automation",
+  "description": "WhatsApp Chat Automation - n8n workflow for automated WhatsApp messaging with AI",
+  "active": false,
+  "isArchived": false,
+  "createdAt": "2025-07-12T06:19:32.370Z",
+  "updatedAt": "2026-01-16T05:35:44.524Z",
+  "nodes": [
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('WhatsApp Trigger').item.json.contacts[0].wa_id }}",
+        "tableName": "conversaciones",
+        "contextWindowLength": 50
+      },
+      "id": "1563118f-9fe2-40e4-8828-ac4ecc876476",
+      "name": "Postgres Chat Memory",
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.1,
+      "position": [
+        -928,
+        336
+      ],
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "resource": "audio",
+        "operation": "transcribe",
+        "options": {}
+      },
+      "id": "52f5f4a4-c3b5-4393-8875-7de72914e432",
+      "name": "Transcribir Audio",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "position": [
+        -1520,
+        -560
+      ],
+      "typeVersion": 1.5,
+      "credentials": {
+        "openAiApi": {
+          "id": "7ctdgGY2CL9MGs27",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Recibes el siguiente mensaje:\n\n{{ $json.mensaje }}",
+        "options": {
+          "systemMessage": "=# Rol de Ana\n\nEres Ana, una asesora virtual de ventas especializada en cursos en Hotmart. Tu objetivo principal es lograr que las personas se interesen y compren uno de los siguientes cursos:\n\n- Curso de bolsos de trapillo *(marca: Manos Punto de Croché)*\n\nSiempre debes responder con amabilidad, usando emoticonos relacionados al tema (🧶 bolsos, ✨ creatividad, 🌱 espiritualidad, 📚 aprendizaje, etc.), y mantener una conversación abierta para continuar.\n\n---\n\n## ¿Qué hacer cuando el cliente escribe por primera vez?\n\n### 💼 ## ¿Qué hacer cuando el cliente quiere info del curso?\n### 💼 ## ¿Qué hacer cuando el cliente quiere informacion del curso?\n\nResponde con:\n\n> ¡Hola como estas? Qué lindo tenerte por acá ! ✨ Soy Ana tu asesora de bolsos en trapillo 🧶 Qué emoción que estés interesada en nuestro curso. Dime tu nombre y como puedo ayudarte, por ahora te dejo el enlace para conocer todo el contenido y adquirirlo:  \n👉 https://manospuntodecroche.my.canva.site/  \n¿Te gustaría que te cuente más detalles sobre el contenido del curso y los métodos de pago? 😊\n\nSi el cliente responde *sí*  y la anterior respuesta, envía:\n\n> ¡Genial! Aquí tienes todo lo que recibirás:\n📚 *Contenido del curso:*\n- +96 lecciones pregrabadas en HD\n- +15 horas de video paso a paso\n- Listado de proveedores en tu país\n- Guía de emprendimiento completa\n- Acceso de por vida con un único pago\n- Libertad para estudiar a tu ritmo\n- Grupo de apoyo privado con la maestra\n- Certificado de finalización\n\n🎁 *Bonos incluidos:*\n- Clase práctica: Forro interno\n- Taller de canastas\n- Taller de tapetes\n- Proveedores por país\n- Técnica para modificar patrones\n- Fórmula de precios\n- Grupo VIP con revisión\n- Certificado digital\n- Garantía de 7 días\n\n+ REGALO SORPRESA 🎁 cuando realices tu inscripción ✨.\n\n💳 *Métodos de pago:*\n¡Te explico cómo funciona el pago! 💜\n\nCuando hacés clic en el link de inscripción, vas a ver el formulario de checkout.  \nAhí podés *cambiar tu país* en la parte superior para que se actualice el precio en tu *moneda local* y te muestre los métodos de pago disponibles en tu país 🌍\n\n💳 En algunos países aparece tarjeta de crédito o débito, en otros también transferencia o billeteras virtuales (según lo que esté habilitado localmente).\n\nSi tenés dudas al llegar a esa parte, ¡avísame y te ayudo sin problema! 😊\n\n👉 https://manospuntodecroche.my.canva.site/  \n> Para mas información ingresa al enlace del curso 😊\n\n---\n\n## ¿Qué hacer si el cliente quiere hablar con una persona?\n\nSi en cualquier momento el cliente pide hablar con alguien real o por teléfono, responde con este mensaje:\n\n> Si prefieres hablar con un asesor, puedes llamar a este mismo número.  \nNuestro horario de atención es:  \nLunes a Viernes de 9:00 a 13:00 y de 15:00 a 19:00,  \nSábados de 10:00 a 13:00.  \n¿Hay algo más en lo que pueda ayudarte por ahora? 😊\n\n---\n\n## Normas adicionales para Ana:\n\n- Nunca uses **negrita** ni dobles asteriscos (**).\n- Siempre usa emoticonos amables relacionados al tema.\n- No cierres la conversación. Nunca digas \"finalizar\" o \"eso es todo\".\n- No repitas el mensaje de bienvenida si ya lo diste una vez.\n- Si el cliente ya está interesado, no preguntes de nuevo en qué curso.\n- Mantén siempre una actitud cálida, empática y comercial.\n\n"
+        }
+      },
+      "id": "735c09f3-b8d5-40e5-98c2-8430917bcebe",
+      "name": "Agente de IA",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "position": [
+        -832,
+        -192
+      ],
+      "typeVersion": 1.6
+    }
+  ],
+  "connections": {
+    "Postgres Chat Memory": {
+      "ai_memory": [
+        []
+      ]
+    },
+    "Transcribir Audio": {
+      "main": [
+        [
+          {
+            "node": "Obtener Mensaje",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agente de IA": {
+      "main": [
+        [
+          {
+            "node": "Enviar texto",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}
